@@ -39,8 +39,8 @@ services:
       - ./odoo.conf:/etc/odoo/odoo.conf:ro    # (opcional) config fina
     # No exponemos puertos hacia fuera; Dokploy hace el proxy
     # Si Dokploy requiere puerto interno explícito, defínelo:
-    # ports:
-    #   - "8069:8069"
+    ports:
+      - "8069:8069"
 
 volumes:
   pgdata:
