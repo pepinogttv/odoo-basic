@@ -8,7 +8,7 @@ services:
     environment:
       POSTGRES_DB: postgres
       POSTGRES_USER: odoo
-      POSTGRES_PASSWORD: supersegura
+      POSTGRES_PASSWORD: supersegura   # cámbiala
       TZ: America/Argentina/Buenos_Aires
     volumes:
       - pgdata:/var/lib/postgresql/data
@@ -26,12 +26,22 @@ services:
       db:
         condition: service_healthy
     environment:
-      HOST: db
+      HOST: db              # variables soportadas por la imagen oficial
       PORT: 5432
       USER: odoo
-      PASSWORD: supersegura
+      PASSWORD: supersegura # misma que arriba
+      # Opcional: fija contraseña maestra de DB manager
       ADMIN_PASSWD: admin_master_password_superseguro
       TZ: America/Argentina/Buenos_Aires
     volumes:
-      - odoo_data:/var/lib/odoo
-      - ./addons:/mnt/extra-addo
+      - odoo_data:/var/lib/odoo               # filestore + sesiones
+      - ./addons:/mnt/extra-addons            # (opcional) tus addons custom
+      - ./odoo.conf:/etc/odoo/odoo.conf:ro    # (opcional) config fina
+    # No exponemos puertos hacia fuera; Dokploy hace el proxy
+    # Si Dokploy requiere puerto interno explícito, defínelo:
+    # ports:
+    #   - "8069:8069"
+
+volumes:
+  pgdata:
+  odoo_data:
